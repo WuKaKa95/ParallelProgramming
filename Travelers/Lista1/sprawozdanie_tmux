@@ -1,0 +1,110 @@
+wkk@wkk-lenovo:~/PW$ # Wiktor Koczkodaj 279778                                  
+wkk@wkk-lenovo:~/PW$ svn export https://repo.cs.pwr.edu.pl/279778-dir/mz1/Lista1A    Lista1          
+A    Lista1/zad1    
+A    Lista1/zad2    
+A    Lista1/zad3    
+A    Lista1/zad4    
+A    Lista1/zad5    
+A    Lista1/zad1/travelers1.go          
+A    Lista1/zad2/random_seeds.adb       
+A    Lista1/zad2/random_seeds.ads       
+A    Lista1/zad2/random_seeds.ali       
+A    Lista1/zad2/travelers2.adb         
+A    Lista1/zad3/travelers3.go          
+A    Lista1/zad4/random_seeds.adb       
+A    Lista1/zad4/random_seeds.ads       
+A    Lista1/zad4/random_seeds.ali       
+A    Lista1/zad4/travelers4.adb         
+A    Lista1/zad5/travelers5.go          
+Exported revision 1.                    
+wkk@wkk-lenovo:~/PW$ cd Lista1/zad1     
+wkk@wkk-lenovo:~/PW/Lista1/zad1$ go build travelers1.go                                              
+wkk@wkk-lenovo:~/PW/Lista1/zad1$ ./travelers1 > out                                                  
+wkk@wkk-lenovo:~/PW/Lista1/zad1$ shasum out       
+201478ef3215b6d47d120890dd8320bd883d0f04  out     
+wkk@wkk-lenovo:~/PW/Lista1/zad1$ ./travelers1 > out2                                                 
+wkk@wkk-lenovo:~/PW/Lista1/zad1$ shasum out2                                                         
+51cff56bb6f124a1f84b71961f7990c23196b992  out2          
+wkk@wkk-lenovo:~/PW/Lista1/zad1$ svn import -m "out1_1" out https://repo.cs.pwr.edu.pl/279778-dir/mz1/Lista1/zad1/out         
+Adding         out       
+Committing transaction...                         
+Committed revision 2.    
+wkk@wkk-lenovo:~/PW/Lista1/zad1$ svn import -m "out1_2" out2 https://repo.cs.pwr.edu.pl/279778-dir/mz1/Lista1/zad1/out2                                                                                   
+Adding         out2      
+Committing transaction...                         
+Committed revision 3.    
+wkk@wkk-lenovo:~/PW/Lista1/zad1$ cd ../zad2       
+wkk@wkk-lenovo:~/PW/Lista1/zad2$ gnatmake travelers2.adb                                             
+x86_64-linux-gnu-gcc-10 -c travelers2.adb         
+x86_64-linux-gnu-gcc-10 -c random_seeds.adb       
+x86_64-linux-gnu-gnatbind-10 -x travelers2.ali    
+x86_64-linux-gnu-gnatlink-10 travelers2.ali       
+wkk@wkk-lenovo:~/PW/Lista1/zad2$ ./travelers2 > out1                                                 
+wkk@wkk-lenovo:~/PW/Lista1/zad2$ shasum out1      
+1d58596f20190891a9c049ced586b8e73157023b  out1    
+wkk@wkk-lenovo:~/PW/Lista1/zad2$ ./travelers2 > out2                                                 
+wkk@wkk-lenovo:~/PW/Lista1/zad2$ shasum out2                                                         
+afd92b9aa29f757dece3d66d2df443b1a4eb5fb9  out2    
+wkk@wkk-lenovo:~/PW/Lista1/zad2$ svn import -m "out2_1" out1 https://repo.cs.pwr.edu.pl/279778-dir/mz1/Lista1/zad2/out1                                                                                   
+Adding         out1      
+Committing transaction...                         
+Committed revision 4.    
+wkk@wkk-lenovo:~/PW/Lista1/zad2$ svn import -m "out2_2" out2 https://repo.cs.pwr.edu.pl/279778-dir/mz1/Lista1/zad2/out2                                                                                   
+Adding         out2      
+Committing transaction...                         
+Committed revision 5.    
+wkk@wkk-lenovo:~/PW/Lista1/zad2$ cd ../zad3       
+wkk@wkk-lenovo:~/PW/Lista1/zad3$ go build travelers3.go                                              
+wkk@wkk-lenovo:~/PW/Lista1/zad3$ ./travelers3 > out1                                                 
+wkk@wkk-lenovo:~/PW/Lista1/zad3$ shasum out1      
+43e4ead830d1b185b7288572e4eefa5ab172bf25  out1    
+wkk@wkk-lenovo:~/PW/Lista1/zad3$ ./travelers3 > out2                                                 
+wkk@wkk-lenovo:~/PW/Lista1/zad3$ shasum out2                                                         
+39318f4a6b35c89519cedffd8a0b2a3f6e8892e4  out2    
+wkk@wkk-lenovo:~/PW/Lista1/zad3$ svn import -m "out3_1" out1 https://repo.cs.pwr.edu.pl/279778-dir/mz1/Lista1/zad3/out1                                                                                   
+Adding         out1      
+Committing transaction...                         
+Committed revision 6.    
+wkk@wkk-lenovo:~/PW/Lista1/zad3$ svn import -m "out3_2" out2 https://repo.cs.pwr.edu.pl/279778-dir/mz1/Lista1/zad3/out2                                                                                   
+Adding         out2      
+Committing transaction...                         
+Committed revision 7.    
+wkk@wkk-lenovo:~/PW/Lista1/zad3$ cd ../zad4       
+wkk@wkk-lenovo:~/PW/Lista1/zad4$ gnatmake travelers4.adb                                             
+x86_64-linux-gnu-gcc-10 -c travelers4.adb         
+x86_64-linux-gnu-gcc-10 -c random_seeds.adb       
+x86_64-linux-gnu-gnatbind-10 -x travelers4.ali    
+x86_64-linux-gnu-gnatlink-10 travelers4.ali       
+wkk@wkk-lenovo:~/PW/Lista1/zad4$ ./travelers4 > out1                                                 
+wkk@wkk-lenovo:~/PW/Lista1/zad4$ shasum out1      
+d3667857f89ca3128d76ec1c1bea70fb9ef755c9  out1    
+wkk@wkk-lenovo:~/PW/Lista1/zad4$ ./travelers4 > out2                                                 
+wkk@wkk-lenovo:~/PW/Lista1/zad4$ shasum out2                                                         
+5e7ccb64a3dac1c45ff8843244cdf521997578a9  out2    
+wkk@wkk-lenovo:~/PW/Lista1/zad4$ svn import -m "out4_1" out1 https://repo.cs.pwr.edu.pl/279778-dir/mz1/Lista1/zad4/out1                                                                                   
+Adding         out1      
+Committing transaction...                         
+Committed revision 8.    
+wkk@wkk-lenovo:~/PW/Lista1/zad4$ svn import -m "out4_2" out2 https://repo.cs.pwr.edu.pl/279778-dir/mz1/Lista1/zad4/out2                                                                                   
+Adding         out2      
+Committing transaction...                         
+Committed revision 9.    
+wkk@wkk-lenovo:~/PW/Lista1/zad4$ cd ../zad5       
+wkk@wkk-lenovo:~/PW/Lista1/zad5$ go build travelers5.go                                              
+wkk@wkk-lenovo:~/PW/Lista1/zad5$ ./travelers5 > out1                                                 
+wkk@wkk-lenovo:~/PW/Lista1/zad5$ shasum out1      
+14ccaf87cb0ce00775c9f2fd5df382724a892536  out1    
+wkk@wkk-lenovo:~/PW/Lista1/zad5$ ./travelers5 > out2                                                 
+wkk@wkk-lenovo:~/PW/Lista1/zad5$ shasum out2                                                         
+5a6af9e74b4f8c697a835661ea36ff53a7b89fb5  out2    
+wkk@wkk-lenovo:~/PW/Lista1/zad5$ svn import -m "out5_1" out1 https://repo.cs.pwr.edu.pl/279778-dir/mz1/Lista1/zad5/out1                                                                                   
+Adding         out1      
+Committing transaction...                         
+Committed revision 10.   
+wkk@wkk-lenovo:~/PW/Lista1/zad5$ svn import -m "out5_2" out2 https://repo.cs.pwr.edu.pl/279778-dir/mz1/Lista1/zad5/out2                                                                                   
+Adding         out2      
+Committing transaction...                         
+Committed revision 11.   
+wkk@wkk-lenovo:~/PW/Lista1/zad5$ cd ..                                                               
+wkk@wkk-lenovo:~/PW/Lista1$ tmux capture-pane -p -S'-' -E'-' -J > sprawozdanie_tmux                  
+
