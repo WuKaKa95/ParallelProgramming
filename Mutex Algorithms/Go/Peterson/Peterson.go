@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"math/rand"
 	"sync"
+	"sync/atomic"
 	"time"
 )
 
@@ -61,10 +62,9 @@ type TraceSeq struct {
 	Traces []Trace
 }
 
-// Shared Peterson variables
 var (
-	flags [NrOfProcesses]bool
-	turn  int
+	flags [NrOfProcesses]uint32 // 0=false, 1=true
+	turn  uint32
 )
 
 // Global start time
@@ -78,13 +78,12 @@ func printer(wg *sync.WaitGroup, reports <-chan TraceSeq) {
 	for i := 0; i < NrOfProcesses; i++ {
 		seq := <-reports
 		for _, t := range seq.Traces {
-			// Timestamp in seconds with 6 decimal places
 			fmt.Printf("%.6f %d %d %d %c\n",
 				t.TimeStamp.Seconds(), t.Id, t.Pos.X, t.Pos.Y, t.Symbol)
 		}
 	}
 
-	// print the parameters line (for any external display script)
+	// print the parameters line
 	fmt.Printf("-1 %d %d %d ",
 		NrOfProcesses, NrOfProcesses, len(stateNames))
 	for _, name := range stateNames {
@@ -104,8 +103,9 @@ func processTask(id int, seed int64, symbol rune, start <-chan struct{},
 	nSteps := MinSteps + rng.Intn(MaxSteps-MinSteps+1)
 
 	// prepare trace buffer
-	var seq TraceSeq
-	seq.Traces = make([]Trace, 0, nSteps+5)
+	seq := TraceSeq{
+		Traces: make([]Trace, 0, nSteps/4+5),
+	}
 
 	// helper to record a trace
 	record := func(st ProcessState) {
@@ -127,8 +127,7 @@ func processTask(id int, seed int64, symbol rune, start <-chan struct{},
 	// wait for global start
 	<-start
 
-	// main loop
-	for step := 0; step < nSteps; step++ {
+	for step := 0; step < nSteps/4; step++ {
 		// Local section
 		time.Sleep(MinDelay +
 			time.Duration(rng.Float64()*float64(MaxDelay-MinDelay)))
@@ -136,9 +135,9 @@ func processTask(id int, seed int64, symbol rune, start <-chan struct{},
 		// Entry protocol (Peterson)
 		record(EntryProtocol)
 		other := 1 - id
-		flags[id] = true
-		turn = other
-		for flags[other] && turn == other {
+		atomic.StoreUint32(&flags[id], 1)
+		atomic.StoreUint32(&turn, uint32(other))
+		for atomic.LoadUint32(&flags[other]) == 1 && atomic.LoadUint32(&turn) == uint32(other) {
 			// busy wait
 		}
 
@@ -149,9 +148,10 @@ func processTask(id int, seed int64, symbol rune, start <-chan struct{},
 
 		// Exit protocol (Peterson)
 		record(ExitProtocol)
+		// clear flag first, then tiny delay
+		atomic.StoreUint32(&flags[id], 0)
 		time.Sleep(ExitProtocolDelay)
-		flags[id] = false
-		//time.Sleep(ExitProtocolDelay)
+
 		// Back to local
 		record(LocalSection)
 	}
@@ -177,7 +177,7 @@ func main() {
 
 	// Launch processes
 	for i := 0; i < NrOfProcesses; i++ {
-		seed := time.Now().UnixNano() + int64(i)*100 // unique seeds
+		seed := time.Now().UnixNano() + int64(i)*100
 		symbol := rune('A' + i)
 		wg.Add(1)
 		go processTask(i, seed, symbol, startCh, reportCh, &wg)
