@@ -21,8 +21,8 @@ const (
 var (
 	MinDelay          = 10 * time.Millisecond
 	MaxDelay          = 50 * time.Millisecond
-	MinCriticalDelay  = 1 * time.Millisecond
-	MaxCriticalDelay  = 5 * time.Millisecond
+	MinCriticalDelay  = 10 * time.Millisecond
+	MaxCriticalDelay  = 50 * time.Millisecond
 	ExitProtocolDelay = 1 * time.Microsecond
 )
 
@@ -152,7 +152,7 @@ func processTask(id int, seed int64, symbol rune, start <-chan struct{},
 
 	localMax := 0
 
-	for step := 0; step < nSteps; step++ {
+	for step := 0; step < nSteps/4; step++ {
 		// Local section
 		time.Sleep(MinDelay +
 			time.Duration(rng.Float64()*float64(MaxDelay-MinDelay)))
